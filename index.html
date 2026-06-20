@@ -669,7 +669,7 @@ Incluye solo resultados con relevancia alta o media. Si ninguno aplica, lista va
   try {
     const res = await fetch(ANTHROPIC_API, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json", "x-api-key": "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", "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 1000,
