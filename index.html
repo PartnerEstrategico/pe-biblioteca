@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PE — Biblioteca de Conocimiento</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #F7F6F3;
+    --surface: #FFFFFF;
+    --surface2: #F0EEE9;
+    --accent: #1B4FD8;
+    --accent-light: #EEF2FF;
+    --accent2: #0F9B6E;
+    --accent2-light: #EDFAF4;
+    --text: #1A1A1A;
+    --text-muted: #6B6B6B;
+    --text-soft: #9A9A9A;
+    --border: #E2E0DA;
+    --border-strong: #C8C5BC;
+    --danger: #C8321A;
+    --danger-light: #FEF2EF;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* LOGIN */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: var(--bg);
+  }
+
+  .login-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .login-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .login-logo .logo-mark {
+    width: 40px;
+    height: 40px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .login-logo .logo-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .login-logo .logo-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .login-card h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .login-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .field-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .field-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+    margin-bottom: 1rem;
+  }
+
+  .field-input:focus { border-color: var(--accent); background: white; }
+
+  .btn-primary {
+    width: 100%;
+    padding: 11px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    margin-top: 0.5rem;
+  }
+
+  .btn-primary:hover { opacity: 0.88; }
+
+  .login-error {
+    font-size: 13px;
+    color: var(--danger);
+    background: var(--danger-light);
+    border: 1px solid #F5C4B3;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 1rem;
+    display: none;
+  }
+
+  /* APP */
+  #app-screen { display: none; min-height: 100vh; }
+
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .topbar .logo-mark {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .topbar-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-logout {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .btn-logout:hover { border-color: var(--border-strong); color: var(--text); }
+
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+  }
+
+  .hero {
+    margin-bottom: 2.5rem;
+  }
+
+  .hero h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .search-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .search-input-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .search-input:focus { border-color: var(--accent); background: white; }
+
+  .btn-search {
+    padding: 10px 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+
+  .btn-search:hover { opacity: 0.88; }
+  .btn-search:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .filter-btn {
+    font-size: 12px;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .status-bar {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    min-height: 20px;
+  }
+
+  .results { display: flex; flex-direction: column; gap: 10px; }
+
+  .result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .result-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
+  }
+
+  .result-card.alta { border-left: 3px solid var(--accent2); }
+  .result-card.media { border-left: 3px solid var(--accent); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .badges { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  .badge-cliente { background: var(--accent-light); color: var(--accent); }
+  .badge-tipo { background: var(--accent2-light); color: var(--accent2); }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+
+  .card-links { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .card-link {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.15s;
+  }
+
+  .link-video {
+    background: #1A1A1A;
+    color: white;
+  }
+
+  .link-video:hover { background: #333; }
+
+  .link-doc {
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid #C7D7F9;
+  }
+
+  .link-doc:hover { background: #DDE8FF; }
+
+  /* ESTADOS */
+  .loading-state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+  }
+
+  .empty-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--surface2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 22px;
+  }
+
+  .empty-state h3 {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .empty-state p { font-size: 13px; line-height: 1.5; }
+
+  .initial-state {
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .suggested {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .suggestion-chip {
+    font-size: 12px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .suggestion-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  @media (max-width: 600px) {
+    .topbar { padding: 0 1rem; }
+    .main { padding: 1.5rem 1rem; }
+    .hero h2 { font-size: 22px; }
+    .card-header { flex-direction: column; }
+    .badges { margin-top: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-mark">PE</div>
+      <div class="logo-text">
+        Partner Estratégico
+        <div class="logo-sub">Biblioteca de Conocimiento</div>
+      </div>
+    </div>
+    <h1>Bienvenido</h1>
+    <p>Accede al repositorio interno de procesos, videos y manuales operativos.</p>
+    <label class="field-label">Contraseña</label>
+    <input class="field-input" type="password" id="pwd-input" placeholder="Ingresa la contraseña" />
+    <button class="btn-primary" onclick="login()">Ingresar</button>
+    <div class="login-error" id="login-error">Contraseña incorrecta. Intenta de nuevo.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo-mark">PE</div>
+      <span class="topbar-title">Biblioteca de Conocimiento</span>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="hero">
+      <h2>¿Qué necesitas encontrar?</h2>
+      <p>Busca en lenguaje natural — procesos, clientes, tipos de contenido o cualquier detalle operativo.</p>
+    </div>
+
+    <div class="search-box">
+      <div class="search-input-row">
+        <input class="search-input" type="text" id="search-input" placeholder="Ej: ¿Cómo proceso la base No Answer de Dentolaser?" />
+        <button class="btn-search" id="search-btn" onclick="buscar()">Buscar</button>
+      </div>
+      <div class="filters" id="filters-row"></div>
+    </div>
+
+    <div class="status-bar" id="status-bar"></div>
+    <div class="results" id="results-container">
+      <div class="initial-state">
+        <p>Escribe tu búsqueda arriba o elige un tema frecuente:</p>
+        <div class="suggested">
+          <span class="suggestion-chip" onclick="buscarSugerido(this)">Base No Answer</span>
+          <span class="suggestion-chip" onclick="buscarSugerido(this)">Configuración VCC</span>
+          <span class="suggestion-chip" onclick="buscarSugerido(this)">Guiones de campaña</span>
+          <span class="suggestion-chip" onclick="buscarSugerido(this)">Informes para clientes</span>
+          <span class="suggestion-chip" onclick="buscarSugerido(this)">Depuración de bases</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PASSWORD = 'PE2024';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxJuOGa2WWX7SuCK0wBc4dMA6IeBd4g3kZtRqWfw36xdHYtdB2ILl_8__U87Inr6TLgpg/exec';
+const ANTHROPIC_API = 'https://api.anthropic.com/v1/messages';
+
+let allData = [];
+let activeFilter = '';
+
+function login() {
+  const val = document.getElementById('pwd-input').value;
+  const err = document.getElementById('login-error');
+  if (val === PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display = 'block';
+    cargarDatos();
+    err.style.display = 'none';
+  } else {
+    err.style.display = 'block';
+  }
+}
+
+function logout() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-screen').style.display = 'none';
+  document.getElementById('pwd-input').value = '';
+  document.getElementById('search-input').value = '';
+  document.getElementById('results-container').innerHTML = '';
+  document.getElementById('status-bar').textContent = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (document.getElementById('login-screen').style.display !== 'none') login();
+    else buscar();
+  }
+});
+
+async function cargarDatos() {
+  try {
+    const res = await fetch(API_URL);
+    allData = await res.json();
+    construirFiltros();
+  } catch(e) {
+    console.error('Error cargando datos:', e);
+  }
+}
+
+function construirFiltros() {
+  const clientes = [...new Set(allData.map(r => r['Cliente']).filter(Boolean))];
+  const row = document.getElementById('filters-row');
+  row.innerHTML = clientes.map(c =>
+    `<button class="filter-btn" onclick="toggleFilter(this, '${c}')">${c}</button>`
+  ).join('');
+}
+
+function toggleFilter(btn, cliente) {
+  const btns = document.querySelectorAll('.filter-btn');
+  if (activeFilter === cliente) {
+    activeFilter = '';
+    btns.forEach(b => b.classList.remove('active'));
+  } else {
+    activeFilter = cliente;
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+}
+
+function buscarSugerido(el) {
+  document.getElementById('search-input').value = el.textContent;
+  buscar();
+}
+
+async function buscar() {
+  const query = document.getElementById('search-input').value.trim();
+  if (!query) return;
+
+  const btn = document.getElementById('search-btn');
+  const status = document.getElementById('status-bar');
+  const container = document.getElementById('results-container');
+
+  btn.disabled = true;
+  btn.textContent = 'Buscando...';
+  container.innerHTML = '<div class="loading-state"><div class="spinner"></div><span>Analizando tu consulta con IA...</span></div>';
+  status.textContent = '';
+
+  const datos = activeFilter
+    ? allData.filter(r => r['Cliente'] === activeFilter)
+    : allData;
+
+  const indexText = datos.map((row, i) =>
+    `[${i}] Título: ${row['Título']||row['Titulo']||''} | Cliente: ${row['Cliente']||''} | Tipo: ${row['Tipo']||''} | Proceso: ${row['Proceso']||''} | Descripción: ${row['Descripción']||row['Descripcion']||''}`
+  ).join('\n');
+
+  const prompt = `Eres el asistente de búsqueda de la biblioteca interna de Partner Estratégico SAS, empresa de contact center y automatización en Colombia.
+
+El usuario busca: "${query}"
+
+Índice de contenidos disponibles:
+${indexText}
+
+Responde SOLO en JSON válido, sin texto adicional, sin markdown, sin backticks. Formato exacto:
+{"resultados":[{"indice":0,"relevancia":"alta|media|baja","razon":"explicación breve de máximo 15 palabras"}],"mensaje":"solo si no hay resultados, frase orientadora de qué buscar"}
+
+Incluye solo resultados con relevancia alta o media. Si ninguno aplica, lista vacía y mensaje orientador.`;
+
+  try {
+    const res = await fetch(ANTHROPIC_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const aiData = await res.json();
+    const raw = aiData.content.map(b => b.text||'').join('').trim();
+    const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderResultados(parsed, datos);
+  } catch(e) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Error de conexión</h3><p>No se pudo consultar la IA. Verifica tu conexión e intenta de nuevo.</p></div>';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Buscar';
+}
+
+function renderResultados({ resultados, mensaje }, datos) {
+  const status = document.getElementById('status-bar');
+  const container = document.getElementById('results-container');
+
+  if (!resultados || resultados.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h3>Sin resultados</h3>
+      <p>${mensaje || 'No se encontraron contenidos relacionados. Intenta con otros términos.'}</p>
+    </div>`;
+    status.textContent = '';
+    return;
+  }
+
+  status.textContent = `${resultados.length} resultado${resultados.length !== 1 ? 's' : ''} encontrado${resultados.length !== 1 ? 's' : ''}`;
+
+  container.innerHTML = resultados.map(r => {
+    const row = datos[r.indice];
+    if (!row) return '';
+    const titulo = row['Título'] || row['Titulo'] || 'Sin título';
+    const cliente = row['Cliente'] || '';
+    const tipo = row['Tipo'] || '';
+    const desc = row['Descripción'] || row['Descripcion'] || r.razon || '';
+    const linkVideo = (row['Enlace_Video']||'').trim();
+    const linkDoc = (row['Enlace_Documento']||'').trim();
+    const tieneVideo = linkVideo && !linkVideo.includes('xxx') && linkVideo.startsWith('http');
+    const tieneDoc = linkDoc && !linkDoc.includes('xxx') && linkDoc.startsWith('http');
+
+    return `<div class="result-card ${r.relevancia}">
+      <div class="card-header">
+        <span class="card-title">${titulo}</span>
+        <div class="badges">
+          ${cliente ? `<span class="badge badge-cliente">${cliente}</span>` : ''}
+          ${tipo ? `<span class="badge badge-tipo">${tipo}</span>` : ''}
+        </div>
+      </div>
+      ${desc ? `<p class="card-desc">${desc}</p>` : ''}
+      ${(tieneVideo || tieneDoc) ? `<div class="card-links">
+        ${tieneVideo ? `<a class="card-link link-video" href="${linkVideo}" target="_blank">▶ Ver video</a>` : ''}
+        ${tieneDoc ? `<a class="card-link link-doc" href="${linkDoc}" target="_blank">↗ Ver documento</a>` : ''}
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
